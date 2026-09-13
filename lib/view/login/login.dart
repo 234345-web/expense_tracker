@@ -1,37 +1,37 @@
 import 'package:expense_tracker/constants/app_images.dart';
+import 'package:expense_tracker/routes/app_routes.dart';
+import 'package:expense_tracker/view/login/login_controller.dart';
+import 'package:expense_tracker/widgets/custom_title.dart';
+import 'package:expense_tracker/widgets/primary_button.dart';
+import 'package:expense_tracker/widgets/text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/state_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Login extends StatelessWidget {
+class Login extends GetView<LoginController> {
   const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: SafeArea(
         child: GestureDetector(
-          // Close keyboard when tapping anywhere outside the TextField
           onTap: () {
             FocusScope.of(context).unfocus();
           },
-
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
-
             child: SingleChildScrollView(
-           child: Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: Image.asset(
-                      AppImages.logo,
-                      width: 320,
-                      height: 320,
-                    ),
+                    child: Image.asset(AppImages.logo, width: 320, height: 320),
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -52,111 +52,40 @@ class Login extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 40),
-
-                  Text(
-                    'Email',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-
-                  TextField(
-                    cursorColor: Colors.black,
+                  CustomTitle(title: "Email"),
+                  CustomTextField(
+                    hintText: "Enter your email here",
+                    prefixIcon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 10),
-                      hintText: 'Enter your email',
-                      hintStyle: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 13,
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.email,
-                        color: Colors.black,
-                      ),
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                          width: 1,
-                        ),
-                      ),
-                      focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                          width: 1,
-                        ),
-                      ),
-                    ),
                   ),
-
                   const SizedBox(height: 20),
-
-                  Text(
-                    'Password',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-
-                  TextField(
-                    cursorColor: Colors.black,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 10),
-                      hintText: 'Enter minimum 6 characters',
-                      hintStyle: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 13,
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: Colors.black,
-                      ),
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
+                  CustomTitle(title: "Password"),
+                  Obx(
+                    () => CustomTextField(
+                      hintText: "Enter minimum 6 characters",
+                      prefixIcon: Icons.lock,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: controller.isObscured.value,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          controller.isObscured.value
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Colors.black,
-                          width: 1,
                         ),
-                      ),
-                      focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                          width: 1,
-                        ),
+                        onPressed: () => controller.toggleVisibility(),
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 60),
-
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 42, 87, 44),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Login',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
+                  PrimaryButton(title: "Login", onTap: () {
+                    Get.toNamed(AppRoutes.home);
+                  }),
                   const SizedBox(height: 30),
                   GestureDetector(
                     onTap: () {
+                      Get.toNamed(AppRoutes.signup);
                     },
                     child: Center(
                       child: Text(
